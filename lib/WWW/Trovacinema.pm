@@ -10,6 +10,7 @@ sub new {
 
     $self->{scraper} = scraper {
         process 'div.searchRes-group', 'films[]' => scraper {
+            process 'span.filmName', 'no_film' => sub { return 1 };
             process 'a.filmName', 'title' => 'TEXT';
             process 'div.resultLineFilm', 'cinemas[]' => scraper {
                 process 'p.cineName', 'cinema' => 'TEXT';
@@ -32,7 +33,7 @@ sub scrape_films {
     my( $self, $html ) = @_;
     my $data = $self->{scraper}->scrape( $html );
 
-    return $data;
+    return { films => [ grep !$_->{no_film}, @{$data->{films}} ] };
 }
 
 1;
