@@ -16,6 +16,7 @@ sub new {
     $self->{list} = Wx::ListBox->new( $self, -1 );
     $self->{text} = Wx::HtmlWindow->new( $self, -1 );
     $self->{phase} = "";
+    $self->{process} = undef;
 
     $self->SetSize( 600, 400 );
     $self->CreateStatusBar;
@@ -118,6 +119,12 @@ sub _UpdateCardURL {
 sub _Reload {
     my( $self ) = @_;
 
+    if( $self->{process} ) {
+        $self->{process}->TerminateProcess;
+
+        return;
+    }
+
     require Wx::Perl::ProcessStream;
 
     my $process = Wx::Perl::ProcessStream::Process->new
@@ -126,6 +133,7 @@ sub _Reload {
     Wx::Perl::ProcessStream::EVT_WXP_PROCESS_STREAM_STDOUT( $self, '_NewLine' );
     Wx::Perl::ProcessStream::EVT_WXP_PROCESS_STREAM_EXIT( $self, '_Complete' );
 
+    $self->{process} = $process;
     $process->Run;
 }
 
@@ -148,6 +156,7 @@ sub _Complete {
     $self->SetStatusText( "Reloading complete" );
     $event->GetProcess->Destroy;
 
+    $self->{process} = undef;
     $self->_LoadFilms();
 }
 
