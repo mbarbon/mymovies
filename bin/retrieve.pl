@@ -55,10 +55,25 @@ foreach my $film_data ( @{$tc_data->{films}} ) {
     } else {
         print "Adding ", $title, "\n";
 
-         $film = MyFilms::Film->new
+        $film = MyFilms::Film->new
                     ( { title       => $title,
                         projections => \@projections,
                         } );
+    }
+
+    if( !$film->tc_card ) {
+        my $url = $film_data->{url}->abs( $tc->url )->as_string;
+        my $tc_card = MyFilms::TCCard->new( { url => $url } );
+
+        $film->tc_card( $tc_card );
+    }
+
+    if( !$film->tc_card->synopsis ) {
+        print "  Retrieving TrovaCinema film card\n";
+        my $card_res = $ua->get( $film->tc_card->url );
+        my $card_data = $tc->scrape_card( $card_res );
+
+        $film->tc_card->synopsis( $card_data->{synopsis} );
     }
 
     if( !$film->card ) {

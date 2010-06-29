@@ -29,6 +29,10 @@ sub new {
         };
     };
 
+    $self->{scrape_card} = scraper {
+        process 'div.tramaSchedaFilm', 'synopsis' => 'TEXT';
+    };
+
     return $self;
 }
 
@@ -40,6 +44,13 @@ sub scrape_films {
     my $data = $self->{scrape_movies}->scrape( $html );
 
     return { films => [ grep !$_->{no_film}, @{$data->{films}} ] };
+}
+
+sub scrape_card {
+    my( $self, $html ) = @_;
+    my $data = $self->{scrape_card}->scrape( $html );
+
+    return $data;
 }
 
 1;
