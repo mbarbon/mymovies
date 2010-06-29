@@ -74,10 +74,16 @@ sub _ItemSelected {
         $text .= "<br />\n";
     }
 
-    $text .= "<br />\n";
+    if( $film->tc_card && $film->tc_card->synopsis ) {
+        $text .= "<br />\n";
+        $text .= $film->tc_card->synopsis;
+        $text .= "<br />\n";
+    }
 
     if( $film->review && $film->review->text ) {
+        $text .= "<br />\n";
         $text .= $film->review->text;
+        $text .= "<br />\n";
     }
 
     $text =~ s/\x{92}/'/g;
