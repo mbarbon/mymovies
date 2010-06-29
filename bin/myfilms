@@ -1,0 +1,13 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+use Wx;
+use Wx::Html;
+use MyFilms::Wx::Frame;
+
+my $app = Wx::SimpleApp->new;
+my $frame = MyFilms::Wx::Frame->new;
+
+$frame->Show;
+$app->MainLoop;
