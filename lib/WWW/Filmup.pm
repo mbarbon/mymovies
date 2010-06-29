@@ -2,6 +2,7 @@ package WWW::Filmup;
 
 use Moose;
 use Web::Scraper;
+use URI;
 use namespace::autoclean;
 
 sub new {

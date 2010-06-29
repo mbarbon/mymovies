@@ -21,7 +21,7 @@ my $fu = WWW::Filmup->new;
 my $tc = WWW::Trovacinema->new;
 
 print "Retrieving Trovacinema data\n";
-my $tc_res = $ua->get( $tc->url );
+my $tc_res = $ua->get( $tc->start_url );
 my $tc_data = $tc->scrape_films( $tc_res );
 
 foreach my $film ( $db->all_visible_films ) {
