@@ -5,6 +5,7 @@ use Moose;
 use MyFilms::Film;
 use MyFilms::Review;
 use MyFilms::Projection;
+use MyFilms::TCCard;
 use MyFilms::Card;
 
 use KiokuDB;
