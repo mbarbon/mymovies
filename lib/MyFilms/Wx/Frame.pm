@@ -5,8 +5,7 @@ use base 'Wx::Frame';
 
 use MyFilms::DB;
 use Wx qw(:sizer);
-use Wx::Event qw(EVT_LISTBOX EVT_BUTTON);
-use Wx::Perl::PubSub qw(:default);
+use Wx::Perl::PubSub qw(:local);
 
 sub new {
     my( $class ) = @_;
