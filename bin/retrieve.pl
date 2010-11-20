@@ -81,11 +81,14 @@ foreach my $film_data ( @{$tc_data->{films}} ) {
         print "  Searching film card\n";
         my $search_url = $fu->search_film_card( $card_title );
         my $search_res = $ua->get( $search_url );
-        my $search_data = $fu->scrape_search( $search_res );
+        my $search_data = $fu->scrape_search( $search_res )->{result};
 
-        $film->card_entries( $search_data->{result} );
+        # skip wrong entries
+        @$search_data = grep { $_->{url} =~ m{/sc_} } @$search_data;
 
-        foreach my $entry ( @{$search_data->{result}} ) {
+        $film->card_entries( $search_data );
+
+        foreach my $entry ( @$search_data ) {
             $entry->{url} = $entry->{url}->abs( $fu->url )->as_string;
             next unless lc( $entry->{title} ) eq lc( $card_title );
             print "  Adding film card\n";
