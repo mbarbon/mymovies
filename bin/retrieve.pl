@@ -34,6 +34,7 @@ foreach my $film_data ( @{$tc_data->{films}} ) {
     my $title = lc $film_data->{title};
     my $query = Search::GIN::Query::Manual->new( values => { title => $title } );
     my @films = $dir->search( $query )->all;
+    ( my $card_title = $title ) =~ s/\(3d\)//g;
 
     die if @films > 1;
 
