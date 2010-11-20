@@ -83,6 +83,8 @@ foreach my $film_data ( @{$tc_data->{films}} ) {
         my $search_res = $ua->get( $search_url );
         my $search_data = $fu->scrape_search( $search_res );
 
+        $film->card_entries( $search_data->{result} );
+
         foreach my $entry ( @{$search_data->{result}} ) {
             $entry->{url} = $entry->{url}->abs( $fu->url )->as_string;
             next unless lc( $entry->{title} ) eq lc( $card_title );
