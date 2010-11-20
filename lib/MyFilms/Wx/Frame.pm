@@ -17,7 +17,6 @@ sub new {
     $self->{phase} = "";
     $self->{process} = undef;
 
-    $self->SetSize( 600, 400 );
     $self->CreateStatusBar;
 
     my $delete = Wx::Button->new( $self, -1, 'Delete' );
@@ -40,6 +39,7 @@ sub new {
     $ts->Add( $self->{list}, 0, wxEXPAND|wxALL, 10 );
     $ts->Add( $ds, 1, wxEXPAND|wxALL, 10 );
 
+    $self->SetSize( [1000, 600] );
     $self->SetSizer( $ts );
 
     subscribe( $self->{list}, 'ItemSelected', $self, '_ItemSelected' );
