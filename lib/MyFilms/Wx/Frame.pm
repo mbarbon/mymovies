@@ -6,6 +6,7 @@ use base 'Wx::Frame';
 use MyFilms::DB;
 use Wx qw(:sizer);
 use Wx::Perl::PubSub qw(:local);
+use MyFilms::Wx::UrlList;
 
 sub new {
     my( $class ) = @_;
@@ -108,8 +109,13 @@ sub _UpdateCardURL {
     my $film = $self->{films}->[$index];
 
     my $old_url = $film->card ? $film->card->url : '';
-    my $new_url = Wx::GetTextFromUser( 'Insert card URL', 'Insert card URL',
-                                       $old_url, $self );
+    my $choose = MyFilms::Wx::UrlList->new( $self );
+
+    $choose->SetUrls( $old_url, $film->card_entries || [] );
+
+    return unless $choose->ShowModal;
+
+    my $new_url = $choose->GetUrl;
 
     if( $new_url ) {
         $film->card( MyFilms::Card->new ) unless $film->card;
