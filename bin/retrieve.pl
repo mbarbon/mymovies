@@ -79,12 +79,12 @@ foreach my $film_data ( @{$tc_data->{films}} ) {
 
     if( !$film->card ) {
         print "  Searching film card\n";
-        my $search_url = $fu->search_film_card( $title );
+        my $search_url = $fu->search_film_card( $card_title );
         my $search_res = $ua->get( $search_url );
         my $search_data = $fu->scrape_search( $search_res );
 
         foreach my $entry ( @{$search_data->{result}} ) {
-            next unless lc( $entry->{title} ) eq lc( $title );
+            next unless lc( $entry->{title} ) eq lc( $card_title );
             print "  Adding film card\n";
             $film->card( MyFilms::Card->new
                              ( { url => $entry->{url}->abs( $fu->url )->as_string,
